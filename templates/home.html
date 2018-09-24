@@ -1,0 +1,49 @@
+<html>
+<head>
+<style>
+
+h2 {
+    text-align: center;
+}
+body {
+  text-align: left;
+  text-shadow: transparent;
+  
+}
+a {
+    color: hotpink;
+}
+ul {
+  background: #ff9999;
+  padding: 20px;
+}
+
+</style>
+</head>
+<body>
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<h2>Hi {{ user.username }}!</h2>
+<form method="post" action="preference/">
+      {% csrf_token %}
+      <ul>
+        <input type='radio' name="pc" value= Yes/> Yes<br >
+        <input type='radio' name="pc" value= No/> No <br >
+        <input type='checkbox' name="u" value= {{user.username}}/> I Agree <br >     
+        <input type="submit" value="Submit">
+      </ul>
+    </form>
+
+  <p><a href="{% url 'logout' %}">logout</a></p>
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">login</a> |
+  <a href="{% url 'signup' %}">signup</a>
+{% endif %}
+{% endblock %}
+</body>
+</html>

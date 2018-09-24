@@ -1,0 +1,14 @@
+{% block title %}Thanks for choosing an Option{% endblock %}
+<form method="post" >
+      {% csrf_token %}
+      <ul>
+        <input type='radio' name="type" value= VEG/> VEG<br >
+        <input type='radio' name="type" value= NON-VEG/> NON-VEG <br >
+        <input type='checkbox' name="u" value= {{user.username}}/> I Agree <br >     
+        
+
+        <input type="submit" value="Submit">
+      </ul>
+    </form>
+
+<t>{{pref}}</t>

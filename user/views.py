@@ -15,13 +15,11 @@ class SignUp(generic.CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy('login')
     template_name = 'signup.html'
-
 def get_preference(request): 
  	if request.method == 'POST':
  		now = datetime.datetime.now()
  		present_date = str(now)[:10]
  		day = now.weekday()
- 		payload = {"head": "Welcome!", "body": "Hello World"}
  		if 'type' in request.POST:
  			typ = request.POST.getlist('type')
  			t = typ[0].split(',')
@@ -29,22 +27,21 @@ def get_preference(request):
  			return render(request, 'pref.html', {
  			'pref':typ
  			})
- 		
- 		#if 'pc' in request.POST:
- 		empc = request.POST.getlist('pc')
- 		t = empc[0].split(',')
- 		if t[0] == 'Yes' and day == 2:
- 			return render(request, 'pref-wed.html', {
- 			'pref':empc
- 			})
- 		gsheet(t[0], t[1], present_date)
- 		return render(request, 'pref.html', {
- 		'pref':empc
- 		})
+ 		if 'c' in request.POST:
+ 			typ = request.POST.getlist('c')
+ 			t = typ[0].split(',')
+ 			print(t[0])
+ 			if day == 1:
+ 				return render(request, 'pref-wed.html')
+ 			else:
+ 				return render(request, 'pref-other.html')
  		
  	return render(request, 'pref.html', {
  		'pref':'no choice'
  		})
+ 	
+
+
 
 def gsheet_authentication():
 	json_key = json.load(open('user/config/creds.json')) # json credentials you downloaded earlier

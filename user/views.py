@@ -3,6 +3,7 @@ from django.views import generic
 from django.shortcuts import render
 from .forms import CustomUserCreationForm
 
+
 import json
 import gspread
 from oauth2client.client import SignedJwtAssertionCredentials
@@ -19,43 +20,34 @@ def get_preference(request):
  	if request.method == 'POST':
  		now = datetime.datetime.now()
  		present_date = str(now)[:10]
- 		day = now.weekday()+3
+ 		day = now.weekday()
+ 		payload = {"head": "Welcome!", "body": "Hello World"}
  		if 'type' in request.POST:
  			typ = request.POST.getlist('type')
- 			user = request.POST.getlist('u')
- 			print(typ,user)
- 			gsheet(typ,user, present_date)
+ 			t = typ[0].split(',')
+ 			gsheet(t[0], t[1], present_date)
  			return render(request, 'pref.html', {
  			'pref':typ
  			})
- 		print("posted")
+ 		
  		#if 'pc' in request.POST:
- 		if day == 3:
- 			empc = request.POST.getlist('pc')
- 			user = request.POST.getlist('u')
- 			print(empc,user)
- 			gsheet(empc,user, present_date)
- 			if empc[0] == 'No/':
- 				return render(request, 'pref.html', {
- 				'pref':empc
- 				})
-
+ 		empc = request.POST.getlist('pc')
+ 		t = empc[0].split(',')
+ 		if t[0] == 'Yes' and day == 2:
  			return render(request, 'pref-wed.html', {
  			'pref':empc
  			})
- 		empc = request.POST.getlist('pc')
- 		user = request.POST.getlist('u')
- 		print(empc,user)
- 		gsheet(empc,user , present_date)
+ 		gsheet(t[0], t[1], present_date)
  		return render(request, 'pref.html', {
  		'pref':empc
  		})
+ 		
  	return render(request, 'pref.html', {
  		'pref':'no choice'
  		})
 
 def gsheet_authentication():
-	json_key = json.load(open('user/creds.json')) # json credentials you downloaded earlier
+	json_key = json.load(open('user/config/creds.json')) # json credentials you downloaded earlier
 	scope = ['https://spreadsheets.google.com/feeds',
 'https://www.googleapis.com/auth/drive']
 	credentials = SignedJwtAssertionCredentials(json_key['client_email'], json_key['private_key'].encode(), scope) 
@@ -66,8 +58,8 @@ def gsheet_authentication():
 
 def gsheet(choice, user , present_date):
 	worksheet = gsheet_authentication()
-	choice = choice[0].rstrip('/')
-	user = user[0].rstrip('/')
+	choice = choice.rstrip('/')
+	user = user.rstrip('/')
 	all_cells = worksheet.range('A1:A11')
 	all_dates = worksheet.range('B1:J1')
 	count_user = 0

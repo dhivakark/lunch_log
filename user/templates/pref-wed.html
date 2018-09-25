@@ -1,14 +1,59 @@
-{% block title %}Thanks for choosing an Option{% endblock %}
-<form method="post" >
+<head>
+
+<style>
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: black;
+    padding: 35px 64px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 30px;
+    text-indent: center;
+}
+.button:hover { 
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+    background-color:white; /* Green */
+    color: green;
+}
+.button1 {
+    background-color: #873434; 
+    color: black; 
+    border: none;
+}
+.button1:hover {
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+    background-color: white;
+    color: red;
+}
+
+body {
+  text-shadow: transparent;
+  background-color: #e5b5d9;
+  
+  height: 50px;
+  text-align: center;
+}
+b {
+  text-indent: center;
+}
+</style>
+</head>
+<body>
+<b>
+  <font size="5"><b>Oh! It's wednesday... Are you a Vegetarian or a Non-vegetarian today??</b></font>
+</b>
+<form id="myForm" method="post" >
       {% csrf_token %}
       <ul>
-        <input type='radio' name="type" value= VEG/> VEG<br >
-        <input type='radio' name="type" value= NON-VEG/> NON-VEG <br >
-        <input type='checkbox' name="u" value= {{user.username}}/> I Agree <br >     
-        
+         <button class="button" type='radio' name="type" value= VEG,{{user.username}} onBlur="submitForm()"/> VEGETARIAN</button>
+         <button class="button button1" type='radio' name="type" value= NON-VEG,{{user.username}} onBlur="submitForm()"/> NON-VEGETARIAN </button >
+            
 
-        <input type="submit" value="Submit">
+       
       </ul>
-    </form>
+ </form>
+</body>
 
-<t>{{pref}}</t>
+

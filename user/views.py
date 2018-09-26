@@ -9,6 +9,21 @@ from oauth2client.client import SignedJwtAssertionCredentials
 #import PyOpenSSL
 import datetime
 import calendar
+from django import forms
+
+
+def gsheet_authentication():
+	json_key = json.load(open('user/config/creds.json')) # json credentials you downloaded earlier
+	scope = ['https://spreadsheets.google.com/feeds',
+'https://www.googleapis.com/auth/drive']
+	credentials = SignedJwtAssertionCredentials(json_key['client_email'], json_key['private_key'].encode(), scope) 
+	file = gspread.authorize(credentials) # authenticate with Google
+	sheet = file.open("MUO_Python_Sheet") # open sheet
+	worksheet = sheet.sheet1
+	return worksheet
+
+
+WORKSHEET = gsheet_authentication()
 
 class SignUp(generic.CreateView):
     form_class = CustomUserCreationForm
@@ -19,12 +34,13 @@ def get_preference(request):
  	if request.method == 'POST':
  		now = datetime.datetime.now()
  		present_date = str(now)[:10]
- 		day = now.weekday()+3
+ 		day = now.weekday()
  		if 'type' in request.POST:
  			typ = request.POST.getlist('type')
  			user = request.POST.getlist('u')
- 			print(typ,user)
- 			gsheet(typ,user, present_date)
+ 			choice = typ[0].rstrip('/')
+ 			user = user[0].rstrip('/')
+ 			gsheet(choice, user, present_date)
  			return render(request, 'pref.html', {
  			'pref':typ
  			})
@@ -33,8 +49,9 @@ def get_preference(request):
  		if day == 3:
  			empc = request.POST.getlist('pc')
  			user = request.POST.getlist('u')
- 			print(empc,user)
- 			gsheet(empc,user, present_date)
+ 			choice = empc[0].rstrip('/')
+ 			user = user[0].rstrip('/')
+ 			gsheet(choice, user, present_date)
  			if empc[0] == 'No/':
  				return render(request, 'pref.html', {
  				'pref':empc
@@ -45,8 +62,9 @@ def get_preference(request):
  			})
  		empc = request.POST.getlist('pc')
  		user = request.POST.getlist('u')
- 		print(empc,user)
- 		gsheet(empc,user , present_date)
+ 		choice = empc[0].rstrip('/')
+ 		user = user[0].rstrip('/')
+ 		gsheet(choice, user , present_date)
  		return render(request, 'pref.html', {
  		'pref':empc
  		})
@@ -54,22 +72,13 @@ def get_preference(request):
  		'pref':'no choice'
  		})
 
-def gsheet_authentication():
-	json_key = json.load(open('user/creds.json')) # json credentials you downloaded earlier
-	scope = ['https://spreadsheets.google.com/feeds',
-'https://www.googleapis.com/auth/drive']
-	credentials = SignedJwtAssertionCredentials(json_key['client_email'], json_key['private_key'].encode(), scope) 
-	file = gspread.authorize(credentials) # authenticate with Google
-	sheet = file.open("MUO_Python_Sheet") # open sheet
-	worksheet = sheet.sheet1
-	return worksheet
+
+
 
 def gsheet(choice, user , present_date):
-	worksheet = gsheet_authentication()
-	choice = choice[0].rstrip('/')
-	user = user[0].rstrip('/')
+	worksheet = WORKSHEET
 	all_cells = worksheet.range('A1:A11')
-	all_dates = worksheet.range('B1:J1')
+	all_dates = worksheet.range('B1:P1')
 	count_user = 0
 	count_date = 0
 	for cell in all_cells:
@@ -78,5 +87,69 @@ def gsheet(choice, user , present_date):
 			for date in all_dates:
 				count_date += 1
 				if date.value == present_date:
-					print(chr(ord('A') + count_date)+str(count_user))
 					worksheet.update_acell(chr(ord('A') + count_date)+str(count_user), choice)
+
+
+def weekly_entry(request):
+	if request.method == 'POST':
+		global name
+		name = request.POST['name']
+		worksheet = WORKSHEET
+		now = datetime.datetime.now()
+		present_date = str(now)[:10]
+		day = now.weekday()
+		all_dates = worksheet.range('B1:P1')
+		global date_list
+		date_list = list()
+		count_date = 0
+		count_user = 0
+		all_cells = worksheet.range('A1:A11')
+		for cell in all_cells:
+			count_user += 1
+			if cell.value == name:
+				for date in all_dates:
+					count_date += 1
+					if date.value == present_date or 0<len(date_list)<6:
+						column = chr(ord('A') + count_date)
+						if worksheet.acell(str(column+'2')).value == 'w':
+							choice = worksheet.acell(str(column+str(count_user))).value
+							date_list.append([date.value, day%7, choice])
+						day += 1
+					if len(date_list) > 5:
+						break
+				break
+		context={'week_list':date_list}
+		return render(request, 'weekly_log.html',context)
+
+
+
+def week_updated(request):
+	if request.method == "POST":
+		for date in date_list:
+			choice = request.POST[date[0]]
+			gsheet(choice, name , date[0])
+	return render(request, '/home/mukes/lunch_log/user/templates/week_updated.html')	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

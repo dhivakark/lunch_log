@@ -1,0 +1,33 @@
+<form action="week_updated/" method="post">
+{% csrf_token %}
+<ul>  
+   {% for name in week_list %}
+    <li> {{ name.0 }} <br ></li>
+       <select name = {{name.0}}>
+            {% if name.2 != "" %}
+            <option value={{name.2}}>{{name.2}}</option>
+            {%endif%}
+            {% if name.2 == "" or name.2 != "No" %}
+            <option value="No">No</option>
+            {%endif%}
+	    {% if name.1 != 2 %}
+            {% if name.2 != "Yes" %}
+            <option value="Yes">Yes</option>
+            {%endif%}
+	    {%else%}
+            {% if name.2 != "VEG" %}
+            <option value="VEG">VEG</option>
+            {%endif%}
+            {% if name.2 != "NON-VEG" %}
+	          <option value="NON-VEG">NON-VEG</option>
+            {%endif%}
+	    {%endif%}
+       </select>
+   {% endfor %}
+</ul>
+</br>
+</br>
+  <input type="submit" value='SUBMIT'>
+</form>
+
+

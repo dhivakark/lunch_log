@@ -38,6 +38,11 @@ ul {
       </ul>
     </form>
 
+<form action='user/weekly_entry/' method='post'>
+{% csrf_token %}
+<button type="submit" value={{user.username}} name='name' >Weekly_entry</button>
+</form>
+
   <p><a href="{% url 'logout' %}">logout</a></p>
 {% else %}
   <p>You are not logged in</p>

@@ -3,7 +3,8 @@ from django.views import generic
 from django.shortcuts import render
 from .forms import CustomUserCreationForm
 
-
+import logging
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 import json
 import gspread
 from oauth2client.client import SignedJwtAssertionCredentials
@@ -43,7 +44,7 @@ def get_preference(request):
  		if 'c' in request.POST:
  			if not isholiday(present_date):
  				if day == 2:
- 					print(isholiday(present_date))
+ 					logging.debug(isholiday(present_date))
  					return render(request, 'pref-wed.html')
  				else:
  					return render(request, 'pref-other.html')
@@ -61,7 +62,7 @@ def isholiday(present_date):
 	for date in all_dates:
 		count_date += 1
 		if date.value == present_date:
-			print(worksheet.acell(str(chr(ord('A') + count_date)+'2')))
+			logging.debug(worksheet.acell(str(chr(ord('A') + count_date)+'2')))
 			if worksheet.acell(str(chr(ord('A') + count_date)+'2')).value == 'h':
 				return 1
 			else:
@@ -81,7 +82,7 @@ def gsheet(choice, user , present_date):
 			for date in all_dates:
 				count_date += 1
 				if date.value == present_date:
-					print(chr(ord('A') + count_date)+str(count_user))
+					logging.debug(chr(ord('A') + count_date)+str(count_user))
 					worksheet.update_acell(chr(ord('A') + count_date)+str(count_user), choice)
 
 def weekly_entry(request):
@@ -120,5 +121,19 @@ def week_updated(request):
 	if request.method == "POST":
 		for date in date_list:
 			choice = request.POST[date[0]]
-			gsheet(choice, name , date[0])
+			choice = choice.split(',')
+			if choice[0] != choice[1]:
+				gsheet(choice[0], name , date[0])
 	return render(request, 'pref.html')	
+
+
+
+
+
+
+
+
+
+
+
+

@@ -4,29 +4,43 @@ body{
 	background-color: #e5b5d9;
 }
 
-button[type=submit] {
-    border-radius: 5px;
-    border: 0;
-    width: 90px;
-    height:35px;
-    font-family: Tahoma;
-    font-size: 25;
-    background: #f4f4f4;
-    /* Old browsers */
-    background: -moz-linear-gradient(top, #f4f4f4 1%, #ededed 100%);
-    /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(1%, #f4f4f4), color-stop(100%, #ededed));
-    /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, #f4f4f4 1%, #ededed 100%);
-    /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, #f4f4f4 1%, #ededed 100%);
-    /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, #f4f4f4 1%, #ededed 100%);
-    /* IE10+ */
-    background: linear-gradient(to bottom, #f4f4f4 1%, #ededed 100%);
-    /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f4f4f4', endColorstr='#ededed', GradientType=0);
-    /* IE6-9 */
+.button {
+  border-radius: 4px;
+  background-color: #f4511e;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 19px;
+  padding: 10px;
+  width: 150px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 25px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
 }
 </style>
 </head>
@@ -40,7 +54,7 @@ button[type=submit] {
 <form method="post">
   {% csrf_token %}
   {{ form.as_p }}
-  <button type="submit">Login</button>
+  <button class="button" type="submit"><span>Login</span></button>
 </form>
 {% endblock %}
 </body>

@@ -1,10 +1,9 @@
 
 <html>
 <head>
-
 <style>
 .button {
-    background-color: #4CAF50; /* Green */
+    background-color: #2d99d8; /* Green */
     border: none;
     color: black;
     padding: 35px 64px;
@@ -14,12 +13,13 @@
     font-size: 30px;
     text-indent: center;
 }
+
 .button:hover { 
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
     background-color:white; 
 }
 .button1 {
-    background-color: red; 
+    background-color: #512e48; 
     color: black; 
     border: none;
 }
@@ -104,7 +104,7 @@ input[type=submit] {
 <form id="myForm1" method="post" action="preference/">
       {% csrf_token %}
       <ul>
-       <button class="button" type='radio' name="c" value= Today/> Today</button>
+       <button class="button" type='radio' name="c" value= Today/><i class="fa fa-spinner fa-spin"></i> Today</button>
 </ul>
 </form>
 <form action='user/weekly_entry/' method='post'>

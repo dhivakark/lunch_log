@@ -104,21 +104,21 @@ button[type=submit] {
     <div class="custom-select" style="width:200px;">
        <select name = {{name.0}}>
             {% if name.2 != "" %}
-            <option value={{name.2}}>{{name.2}}</option>
+            <option value={{name.2}},{{name.2}}>{{name.2}}</option>
             {%endif%}
             {% if name.2 == "" or name.2 != "No" %}
-            <option value="No">No</option>
+            <option value=No,{{name.2}}>No</option>
             {%endif%}
 	    {% if name.1 != 2 %}
             {% if name.2 != "Yes" %}
-            <option value="Yes">Yes</option>
+            <option value=Yes,{{name.2}}>Yes</option>
             {%endif%}
 	    {%else%}
             {% if name.2 != "VEG" %}
-            <option value="VEG">VEG</option>
+            <option value=VEG,{{name.2}}>VEG</option>
             {%endif%}
             {% if name.2 != "NON-VEG" %}
-	          <option value="NON-VEG">NON-VEG</option>
+	          <option value=NON-VEG,{{name.2}}>NON-VEG</option>
             {%endif%}
 	    {%endif%}
        </select>
@@ -202,7 +202,7 @@ document.addEventListener("click", closeAllSelect);
 </ul>
 </br>
 </br>
-  <button type="submit">Submit</button>
+  <button type="submit" >Submit</button>
 </form>
 </body>
 </html>

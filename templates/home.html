@@ -99,13 +99,19 @@ input[type=submit] {
 
 {% block content %}
 {% if user.is_authenticated %}
-<h2>Hi {{ user.username }}!!! Do you like to have your lunch at Soliton today?</h2>
+<h2>Hi {{ user.username }}!!! </h2>
 <h3>
 <form id="myForm1" method="post" action="preference/">
       {% csrf_token %}
       <ul>
-       <button class="button" type='radio' name="pc" value= 'Yes,{{user.username}}' onBlur="submitForm()"/> Yes</button>
-       <button class="button button1" type='radio' name="pc" value= No,{{user.username}} onBlur="submitForm()"/> No </button>
+       <button class="button" type='radio' name="c" value= Today/> Today</button>
+</ul>
+</form>
+<form action='user/weekly_entry/' method='post'>
+      {% csrf_token %}
+      <button class="button button1" type="radio" value={{user.username}} name='name'>Weekly_entry</button>
+</form>
+      
            
         
       </ul>

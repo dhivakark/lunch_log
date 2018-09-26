@@ -104,8 +104,14 @@ input[type=submit] {
 <form id="myForm1" method="post" action="preference/">
       {% csrf_token %}
       <ul>
-       <button class="button" type='radio' name="c" value= 'Yes,{{user.username}}' onBlur="submitForm()"/> Today</button>
-       <button class="button button1" type='radio' name="c" value= No,{{user.username}} onBlur="submitForm()"/> Weekly </button>
+       <button class="button" type='radio' name="c" value= Today/> Today</button>
+</ul>
+</form>
+<form action='user/weekly_entry/' method='post'>
+      {% csrf_token %}
+      <button class="button button1" type="radio" value={{user.username}} name='name'>Weekly_entry</button>
+</form>
+      
            
         
       </ul>

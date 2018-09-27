@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'djcelery',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'user',
+    'django_celery_beat',
     
 ]
 
@@ -50,6 +52,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+BROKER_URL = 'amqp://'
+CELERY_ACCEPT_CONTENT = ['pickle']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+
+CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 
 ROOT_URLCONF = 'login.urls'
 

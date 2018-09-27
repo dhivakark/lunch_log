@@ -3,8 +3,8 @@ from django.views import generic
 from django.shortcuts import render
 from .forms import CustomUserCreationForm
 
-import logging
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+#import logging
+#logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 import json
 import gspread
 from oauth2client.client import SignedJwtAssertionCredentials
@@ -30,6 +30,7 @@ class SignUp(generic.CreateView):
     success_url = reverse_lazy('login')
     template_name = 'signup.html'
 def get_preference(request): 
+ 	
  	if request.method == 'POST':
  		now = datetime.datetime.now()
  		present_date = str(now)[:10]
@@ -44,7 +45,7 @@ def get_preference(request):
  		if 'c' in request.POST:
  			if not isholiday(present_date):
  				if day == 2:
- 					logging.debug(isholiday(present_date))
+ 					#logging.debug(isholiday(present_date))
  					return render(request, 'pref-wed.html')
  				else:
  					return render(request, 'pref-other.html')
@@ -62,7 +63,7 @@ def isholiday(present_date):
 	for date in all_dates:
 		count_date += 1
 		if date.value == present_date:
-			logging.debug(worksheet.acell(str(chr(ord('A') + count_date)+'2')))
+			#logging.debug(worksheet.acell(str(chr(ord('A') + count_date)+'2')))
 			if worksheet.acell(str(chr(ord('A') + count_date)+'2')).value == 'h':
 				return 1
 			else:
@@ -82,7 +83,7 @@ def gsheet(choice, user , present_date):
 			for date in all_dates:
 				count_date += 1
 				if date.value == present_date:
-					logging.debug(chr(ord('A') + count_date)+str(count_user))
+					#logging.debug(chr(ord('A') + count_date)+str(count_user))
 					worksheet.update_acell(chr(ord('A') + count_date)+str(count_user), choice)
 
 def weekly_entry(request):

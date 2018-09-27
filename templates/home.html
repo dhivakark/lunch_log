@@ -8,10 +8,11 @@
 
 .button {
     background-color: #2d99d8; 
-    border: none;
+    border: white;
     color: black;
     padding: 35px 64px;
     text-align: center;
+
     text-decoration: none;
     display: inline-block;
     font-size: 30px;
@@ -24,6 +25,7 @@
 }
 .button1 {
     background-color: #512e48; 
+    padding: 35px 64px;
     color: black; 
     border: none;
 }
@@ -220,7 +222,7 @@ input[type=submit] {
           </form>
           <form action='user/weekly_entry/' method='post'>
           {% csrf_token %}
-            <button class="button button1" type="radio" value={{user.username}} name='name'>Weekly_entry</button>
+            <button class="button button1" type="radio" value={{user.username}} name='name'>Weekly Entry</button>
           </form>
        </h5>
       

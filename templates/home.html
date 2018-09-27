@@ -1,9 +1,13 @@
-
+<!DOCTYPE html>
 <html>
 <head>
 <style>
+* {
+    box-sizing: border-box;
+}
+
 .button {
-    background-color: #2d99d8; /* Green */
+    background-color: #2d99d8; 
     border: none;
     color: black;
     padding: 35px 64px;
@@ -43,7 +47,7 @@ b1 {
   text-align: center;
 }
 body {
-  background-color: #e5b5d9;
+  background-color: white;
   text-align: left;
   text-shadow: transparent;
   
@@ -89,44 +93,180 @@ input[type=submit] {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f4f4f4', endColorstr='#ededed', GradientType=0);
     /* IE6-9 */
 }
+/* Header/Blog Title */
+.header {
+    padding: 5px;
+    text-align: center;
+    background: #e8e5e7;
+}
+
+.header h1 {
+    font-size: 30px;
+}
+
+/* Style the top navigation bar */
+.topnav {
+    overflow: hidden;
+    background-color: #333;
+}
+
+/* Style the topnav links */
+.topnav a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/* Change color on hover */
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+/* Create two unequal columns that floats next to each other */
+/* Left column */
+.leftcolumn {   
+    float: left;
+    width: 75%;
+    text-align: center;
+    padding-left: 20px;
+    padding-bottom: 20px
+    padding-right: 20px
+    background-color:white;
+}
+
+/* Right column */
+.rightcolumn {
+    float: left;
+    width: 25%;
+    background-color: white;
+    padding-left: 20px;
+    
+    padding-bottom: 187px;
+}
+
+/* Fake image */
+.fakeimg {
+    background-color: #aaa;
+    width: 100%;
+    padding: 20px;
+}
+
+/* Add a card effect for articles */
+.card {
+    background-color: #e8e5e7;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Footer */
+.footer {
+    padding: 20px;
+    text-align: center;
+    background: #e8e5e7;
+    margin-top: 20px;
+}
+
+/* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 800px) {
+    .leftcolumn, .rightcolumn {   
+        width: 100%;
+        padding: 0;
+    }
+}
+
+/* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
+@media screen and (max-width: 400px) {
+    .topnav a {
+        float: none;
+        width: 100%;
+    }
+}
 </style>
 </head>
 <body>
-
 {% extends 'base.html' %}
-
 {% block title %}Home{% endblock %}
-
 {% block content %}
+<div class="header">
+  <h1>Lunch Logger</h1>
+</div>
 {% if user.is_authenticated %}
-<h2>Hi {{ user.username }}!!! </h2>
-<h3>
-<form id="myForm1" method="post" action="preference/">
-      {% csrf_token %}
-      <ul>
-       <button class="button" type='radio' name="c" value= Today/><i class="fa fa-spinner fa-spin"></i> Today</button>
-</ul>
-</form>
-<form action='user/weekly_entry/' method='post'>
-      {% csrf_token %}
-      <button class="button button1" type="radio" value={{user.username}} name='name'>Weekly_entry</button>
-</form>
-      
-           
-        
-      </ul>
-    </form>
-  <p><a href="{% url 'logout' %}">logout</a></p></h3>
+<div class="topnav">
+ 
+  <a href="{% url 'logout' %}" style="float:right">Logout</a>
+  <a href="#" style="float:right">Profile</a>
+</div>
 
+<div class="row">
+  <div class="leftcolumn">
+    <div class="card">
+       <h5>
+          <form id="myForm1" method="post" action="preference/">
+          {% csrf_token %}
+          <ul>
+            <button class="button" type='radio' name="c" value= Today/><i class="fa fa-spinner fa-spin"></i> Today</button>
+          </ul>
+          </form>
+          <form action='user/weekly_entry/' method='post'>
+          {% csrf_token %}
+            <button class="button button1" type="radio" value={{user.username}} name='name'>Weekly_entry</button>
+          </form>
+       </h5>
+      
+    </div>
+   </div>
+   
+  <div class="rightcolumn">
+    <div class="card">
+      <h2>About</h2>
+          <p>Hi {{ user.username }}!!!, this is a web application to log your preference for your meal at soliton.</p>
+    </div>
+   </div>
+</div>
 {% else %}
-  <h2>You are not logged in</>
-  <b1>
-  <a href="{% url 'login' %}">login</a> |
-  <a href="{% url 'signup' %}">signup</a>
-  </b1>
+<div class="topnav">
+  
+  <a href="{% url 'login' %}" style="float:right">Login</a>
+  <a href="{% url 'signup' %}" style="float:right">Signup</a>
+</div>
+<div class="row">
+  <div class="leftcolumn">
+    <div class="card">
+       <h5>
+           <h2>Please Login to continue</h2>
+          <form method="post" action ='user/login/'>
+          {% csrf_token %}
+            {{ form.as_p }}
+          <button class='button' type="submit">Login</button>
+      </form>
+       </h5>
+      
+    </div>
+   </div>
+   
+  <div class="rightcolumn">
+    <div class="card">
+      <h2>About</h2>
+      
+      <p>Hi, this is a web application to log your preference for your meal at soliton.</p>
+    </div>
+   </div>
+</div>
 {% endif %}
-{% endblock %}
+<div class="footer">
+  <h2>Powered by STPL</h2>
+</div>
+{% endblock%}
 </body>
 </html>
-
-

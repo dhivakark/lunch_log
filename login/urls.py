@@ -23,6 +23,7 @@ urlpatterns = [
     path('user/', include('user.urls')),
     path('user/', include('django.contrib.auth.urls')),
     path('preference/', views.get_preference, name='get_prefernce'),
+    path('report_builder/', include('report_builder.urls')),
     #path('notifications/', include('pinax.notifications.urls', namespace='pinax_notifications')),
 ]
     

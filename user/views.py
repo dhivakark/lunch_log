@@ -5,10 +5,11 @@ from .forms import CustomUserCreationForm
 
 #import logging
 #logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+
 import json
 import gspread
 from oauth2client.client import SignedJwtAssertionCredentials
-#import PyOpenSSL
+
 import datetime
 import calendar
 
@@ -117,8 +118,11 @@ def weekly_entry(request):
 		context={'week_list':date_list}
 		return render(request, 'weekly_log.html',context)
 
-
 def week_updated(request):
+	'''
+   	call the function weekly_entry and get the value of date_list and name 
+   	by returning it when if condition to evaluate request whether it is post or not fails
+	''' 
 	if request.method == "POST":
 		for date in date_list:
 			choice = request.POST[date[0]]

@@ -212,7 +212,7 @@ input[type=submit] {
 </div>
 {% if user.is_authenticated %}
 <div class="topnav">
- 
+   <a href="{% url 'home' %}" >Home</a>
   <a href="{% url 'logout' %}" style="float:right">Logout</a>
   <a href="#" style="float:right">Profile</a>
 </div>
